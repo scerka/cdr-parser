@@ -1,0 +1,22 @@
+#!/bin/bash
+
+type=$1
+cdrfile=$2
+
+if [ -f "$type" ]; then
+
+    if [ ! -f "$cdrfile" ]; then
+
+        java -jar /usr/bin/cdr_parser.jar type=$type cdrfile=$cdrfile
+
+    else
+
+        echo "Cdrfile not specified"
+
+    fi
+
+else
+    echo "Type not specified"
+fi
+
+exit 0
