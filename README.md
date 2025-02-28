@@ -26,7 +26,7 @@ java -jar cdr_parser.jar type=huawei907b cdrfile=b01015983.dat
 java -jar cdr_parser.jar type=eltex cdrfile=20250212091745.cdr
 ```
 
-Пример с указание аргемента **output**
+Пример с указание аргумента **output**
 ```
 java -jar cdr_parser.jar type=huawei907b cdrfile=/var/www/b01015983.dat output=/var/www/huawei/
 ```
