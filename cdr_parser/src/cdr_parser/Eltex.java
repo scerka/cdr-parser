@@ -74,6 +74,9 @@ public class Eltex {
 				 // it is two cdr lines for redirected call, use another fields for A/B-numbers
 				 if (redirFlag.matches("redirecting")) {
 					 aNumber = lines[14];
+				 }
+				 
+				 if (redirFlag.matches("redirected")) {
 					 bNumber = lines[22];
 				 }
 				 
