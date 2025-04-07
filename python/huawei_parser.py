@@ -2,10 +2,10 @@ import struct
 from collections import OrderedDict
 from datetime import datetime
 
-# BCD код в дату
-def bcdToTime(bcdbytes):
+# Байты в дату
+def bytesToTime(datebytes):
     # к году прибавляем 2000, остальное как есть
-    return datetime(2000 + bcdbytes[0], bcdbytes[1], bcdbytes[2], bcdbytes[3], bcdbytes[4], bcdbytes[5])
+    return datetime(2000 + datebytes[0], datebytes[1], datebytes[2], datebytes[3], datebytes[4], datebytes[5])
 
 # BCD код в номер (не используется)
 def bcdToNumber(bcdbytes):
@@ -55,11 +55,11 @@ def parseCDR(binaryData):
     
     # ans_time, offset = 11, lenght = 6
     offset = 11
-    record['ans_time'] = bcdToTime(struct.unpack_from('BBBBBB', binaryData, offset))
+    record['ans_time'] = bytesToTime(struct.unpack_from('BBBBBB', binaryData, offset))
     
     # end_time, offset = 17, lenght = 6
     offset = 17
-    record['end_time'] = bcdToTime(struct.unpack_from('BBBBBB', binaryData, offset))
+    record['end_time'] = bytesToTime(struct.unpack_from('BBBBBB', binaryData, offset))
     
     # conversation_time, offset = 23, lenght = 4
     offset = 23
