@@ -28,5 +28,5 @@ python huawei_parser.py b01015983.dat
 7. called_number, offset = 49, lenght = 16
 8. termination_code, offset = 87, lenght = 1
 9. bearer_service, offset = 138, lenght = 1
-11. call_type, offset = 85, lenght = 0.5
+10. call_type, offset = 85, lenght = 0.5
 ```
