@@ -187,7 +187,7 @@ if __name__ == "__main__":
     # ! TODO проверка caller_number и called_number на буквы [A-Z] .isdigit() и отбрасывание записей, если нужно
 
     for index, record in enumerate(cdrRecords):
-        print(f"\Запись №{index + 1}:")
+        print(f"\nЗапись №{index + 1}:")
         print(f"caller_number: {record.get('caller_number', 'N/A')}")
         print(f"called_number: {record.get('called_number', 'N/A')}")
         print(f"ans_time: {record.get('ans_time', 'N/A')}")
