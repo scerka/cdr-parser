@@ -63,7 +63,7 @@ def parseCDR(binaryData):
     
     # conversation_time, offset = 23, lenght = 4
     offset = 23
-    record['conversation_time'] = struct.unpack_from('L', binaryData, offset)[0]
+    record['conversation_time'] = struct.unpack_from('<L', binaryData, offset)[0]
     # Получаем секунды и огругляем (документация: conversation_time - unit is 10 ms)
     record['conversation_time'] = round(record['conversation_time'] * 10 / 1000)
     
