@@ -178,8 +178,6 @@ if __name__ == "__main__":
 
     cdrRecords = readCDRFile(sys.argv[1])
 
-    # ! TODO проверка caller_number и called_number на буквы [A-Z] .isdigit() и отбрасывание записей, если нужно
-
     for index, record in enumerate(cdrRecords):
         print(f"\nЗапись №{index + 1}:")
         print(f"caller_number: {record.get('caller_number', 'N/A')}")
