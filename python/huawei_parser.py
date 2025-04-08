@@ -89,21 +89,15 @@ def parseCDR(binaryData):
     offset = 77
     lenght = 2
     
-    # Не правильный формат
-    #record['trunk_group_in'] = struct.unpack_from('>H', binaryData, offset)[0]
-    
     # Если значение 0xffff то транк равен 65535, иначе преобразованное значение
-    record['trunk_group_in'] = 65535 if binaryData[offset:offset + lenght].hex() == 'ffff' else int(binaryData[offset] + binaryData[offset + 1])
+    record['trunk_group_in'] = 65535 if binaryData[offset:offset + lenght].hex() == 'ffff' else struct.unpack_from('<H', binaryData, offset)[0]
     
     # trunk_group_out, offset = 79, lenght = 2
     offset = 79
     lenght = 2
     
-    # Не правильный формат
-    #record['trunk_group_out'] = struct.unpack_from('>H', binaryData, offset)[0]
-    
     # Если значение 0xffff то транк равен 65535, иначе преобразованное значение
-    record['trunk_group_out'] = 65535 if binaryData[offset:offset + lenght].hex() == 'ffff' else int(binaryData[offset] + binaryData[offset + 1])
+    record['trunk_group_out'] = 65535 if binaryData[offset:offset + lenght].hex() == 'ffff' else struct.unpack_from('<H', binaryData, offset)[0]
     
     # termination_code, offset = 87, lenght = 1
     offset = 87
