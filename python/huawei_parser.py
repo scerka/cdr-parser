@@ -176,9 +176,9 @@ if __name__ == "__main__":
         print("Используйте: python huawei_parser.py <cdr_file.dat>")
         sys.exit(1)
 
-    cdrRecords = readCDRFile(sys.argv[1])
+    records = readCDRFile(sys.argv[1])
 
-    for index, record in enumerate(cdrRecords):
+    for index, record in enumerate(records):
         print(f"\nЗапись №{index + 1}:")
         print(f"caller_number: {record.get('caller_number', 'N/A')}")
         print(f"called_number: {record.get('called_number', 'N/A')}")
