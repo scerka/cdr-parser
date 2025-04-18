@@ -53,21 +53,27 @@ def parseCDR(binaryData):
 
     record = OrderedDict()
     
-    # ans_time, offset = 11, lenght = 6
+    # answer_flag, offset = 171.375, lenght = 0.125, unsigned char
+    offset = 171
+    bitOffset = 3
+    
+    record['answer_flag'] = (binaryData[offset] >> bitOffset) & 0x01
+    
+    record['answer_flag_text'] = 'answer' if record['answer_flag'] == 0 else 'no answer'
+    
+    # ans_time, offset = 11, lenght = 6, unsigned char
     offset = 11
     record['ans_time'] = bytesToTime(struct.unpack_from('BBBBBB', binaryData, offset))
     
-    # end_time, offset = 17, lenght = 6
+    # end_time, offset = 17, lenght = 6, unsigned char
     offset = 17
     record['end_time'] = bytesToTime(struct.unpack_from('BBBBBB', binaryData, offset))
     
-    # conversation_time, offset = 23, lenght = 4
+    # conversation_time, offset = 23, lenght = 4, unsigned long (unit is 10 ms)
     offset = 23
-    record['conversation_time'] = struct.unpack_from('<L', binaryData, offset)[0]
-    # Получаем секунды и огругляем (документация: conversation_time - unit is 10 ms)
-    record['conversation_time'] = round(record['conversation_time'] * 10 / 1000)
+    record['conversation_time'] = round(struct.unpack_from('<L', binaryData, offset)[0] * 0.01)
     
-    # caller_number, offset = 30, lenght = 16
+    # caller_number, offset = 30, lenght = 16, BCD
     offset = 30
     lenght = 16
     record['caller_number'] = bcdToString(binaryData[offset:offset + lenght])
@@ -76,7 +82,7 @@ def parseCDR(binaryData):
     if len(record['caller_number']) == 6:
         record['caller_number'] = ulyanovskCode + record['caller_number'];
     
-    # called_number, offset = 49, lenght = 16
+    # called_number, offset = 49, lenght = 16, BCD
     offset = 49
     lenght = 16
     record['called_number'] = bcdToString(binaryData[offset:offset + lenght])
@@ -85,26 +91,26 @@ def parseCDR(binaryData):
     if len(record['called_number']) == 6:
         record['called_number'] = ulyanovskCode + record['called_number'];
         
-    # trunk_group_in, offset = 77, lenght = 2
+    # trunk_group_in, offset = 77, lenght = 2, unsigned short
     offset = 77
     lenght = 2
     
     # Если значение 0xffff то транк равен 65535, иначе преобразованное значение
     record['trunk_group_in'] = 65535 if binaryData[offset:offset + lenght].hex() == 'ffff' else struct.unpack_from('<H', binaryData, offset)[0]
     
-    # trunk_group_out, offset = 79, lenght = 2
+    # trunk_group_out, offset = 79, lenght = 2, unsigned short
     offset = 79
     lenght = 2
     
     # Если значение 0xffff то транк равен 65535, иначе преобразованное значение
     record['trunk_group_out'] = 65535 if binaryData[offset:offset + lenght].hex() == 'ffff' else struct.unpack_from('<H', binaryData, offset)[0]
     
-    # termination_code, offset = 87, lenght = 1
+    # termination_code, offset = 87, lenght = 1, unsigned char
     offset = 87
     
     record['termination_code'] = struct.unpack_from('B', binaryData, offset)[0]
     
-    # call_type, offset = 85, lenght = 0.5
+    # call_type, offset = 85, lenght = 0.5, unsigned char
     offset = 85
     
     callType = binaryData[offset]
@@ -124,7 +130,7 @@ def parseCDR(binaryData):
     }
     record['call_etype'] = enumCallType.get(callType, f"unknown ({callType})")
     
-    # bearer_service, offset = 138, lenght = 1
+    # bearer_service, offset = 138, lenght = 1, unsigned char
     offset = 138
     
     bearerService = struct.unpack_from('B', binaryData, offset)[0]
@@ -180,6 +186,8 @@ if __name__ == "__main__":
 
     for index, record in enumerate(records):
         print(f"\nЗапись №{index + 1}:")
+        print(f"answer_flag: {record.get('answer_flag', 'N/A')}")
+        print(f"answer_flag_text: {record.get('answer_flag_text', 'N/A')}")
         print(f"caller_number: {record.get('caller_number', 'N/A')}")
         print(f"called_number: {record.get('called_number', 'N/A')}")
         print(f"ans_time: {record.get('ans_time', 'N/A')}")
